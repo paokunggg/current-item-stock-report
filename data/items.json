@@ -10,12 +10,12 @@
     "batch": "0000092868",
     "requi": "1",
     "updatedBy": "pao",
-    "updatedAt": "2026-08-15T10:31:50.233Z"
+    "updatedAt": "2026-08-15T10:31:51.412Z"
   },
   {
     "id": 2,
     "kv": "500",
-    "mg": "",
+    "mg": "Bus Fitting",
     "md": "",
     "mdText": "",
     "lt": "",
@@ -23,6 +23,6 @@
     "batch": "",
     "requi": "",
     "updatedBy": "pao",
-    "updatedAt": "2026-08-15T10:31:50.233Z"
+    "updatedAt": "2026-08-15T10:31:51.412Z"
   }
 ]
