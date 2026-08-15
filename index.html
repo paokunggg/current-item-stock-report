@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>รายงานสต็อกอุปกรณ์สถานีไฟฟ้า — current item (shared)</title>
+<style>
+  :root {
+    --bg: #eef2f5;
+    --surface: #ffffff;
+    --surface-2: #f5f8fa;
+    --ink: #1b2430;
+    --ink-muted: #5b6b7c;
+    --ink-faint: #93a3b1;
+    --border: #d7e0e7;
+    --accent: #0f6e8c;
+    --accent-soft: #dcedf3;
+    --accent-ink: #075169;
+    --good: #1e8a5f;
+    --good-bg: #e4f5ec;
+    --good-border: #b9e3cd;
+    --warn: #ad5316;
+    --warn-bg: #fbead9;
+    --warn-border: #f0c69a;
+    --shadow: 0 1px 2px rgba(20, 30, 40, 0.06), 0 8px 24px -12px rgba(20, 30, 40, 0.12);
+    --font-display: "Bahnschrift", "Segoe UI Semibold", "Segoe UI", ui-sans-serif, sans-serif;
+    --font-body: "Segoe UI", ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-mono: "Cascadia Code", "Consolas", ui-monospace, "SFMono-Regular", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0e1418; --surface: #161e24; --surface-2: #1b242b;
+      --ink: #e7edf2; --ink-muted: #91a3b0; --ink-faint: #5f7280;
+      --border: #263139; --accent: #4fc3de; --accent-soft: #143540; --accent-ink: #8fdcef;
+      --good: #4cc790; --good-bg: #12301f; --good-border: #1f4b34;
+      --warn: #e58a4c; --warn-bg: #3a2415; --warn-border: #5a381f;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1418; --surface: #161e24; --surface-2: #1b242b;
+    --ink: #e7edf2; --ink-muted: #91a3b0; --ink-faint: #5f7280;
+    --border: #263139; --accent: #4fc3de; --accent-soft: #143540; --accent-ink: #8fdcef;
+    --good: #4cc790; --good-bg: #12301f; --good-border: #1f4b34;
+    --warn: #e58a4c; --warn-bg: #3a2415; --warn-border: #5a381f;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px -12px rgba(0, 0, 0, 0.5);
+  }
+  :root[data-theme="light"] {
+    --bg: #eef2f5; --surface: #ffffff; --surface-2: #f5f8fa;
+    --ink: #1b2430; --ink-muted: #5b6b7c; --ink-faint: #93a3b1;
+    --border: #d7e0e7; --accent: #0f6e8c; --accent-soft: #dcedf3; --accent-ink: #075169;
+    --good: #1e8a5f; --good-bg: #e4f5ec; --good-border: #b9e3cd;
+    --warn: #ad5316; --warn-bg: #fbead9; --warn-border: #f0c69a;
+    --shadow: 0 1px 2px rgba(20, 30, 40, 0.06), 0 8px 24px -12px rgba(20, 30, 40, 0.12);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { background: var(--bg); }
+  body { margin: 0; font-family: var(--font-body); color: var(--ink); line-height: 1.5; padding: 40px 20px 64px; }
+  .page { max-width: 1180px; margin: 0 auto; display: flex; flex-direction: column; gap: 28px; }
+
+  .masthead { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+  .masthead-text .eyebrow { font-family: var(--font-display); font-size: 12.5px; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase; color: var(--accent-ink); margin: 0 0 8px; }
+  .masthead-text h1 { font-family: var(--font-display); font-weight: 600; font-size: clamp(26px, 4vw, 34px); letter-spacing: -0.01em; margin: 0 0 6px; text-wrap: balance; }
+  .masthead-text p { margin: 0; color: var(--ink-muted); font-size: 14.5px; max-width: 68ch; }
+  .masthead-meta { text-align: right; font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-faint); line-height: 1.7; }
+  .masthead-meta strong { color: var(--ink-muted); font-weight: 600; }
+
+  .sync-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 16px; box-shadow: var(--shadow); font-size: 12.5px; }
+  .sync-status { font-family: var(--font-mono); color: var(--ink-faint); }
+  .sync-status.ok { color: var(--good); }
+  .sync-status.error { color: var(--warn); }
+  .sync-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .gh-panel { background: var(--surface); border: 1px solid var(--accent); border-radius: 10px; padding: 16px 18px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 10px; }
+  .gh-panel[hidden] { display: none; }
+  .gh-panel-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .gh-panel-row label { font-family: var(--font-display); font-size: 12.5px; font-weight: 600; color: var(--ink-muted); min-width: 210px; }
+  .gh-panel input[type="password"], .gh-panel input[type="text"] {
+    flex: 1; min-width: 220px; font-family: var(--font-mono); font-size: 13px; color: var(--ink);
+    background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 8px 10px;
+  }
+  .gh-panel-hint { margin: 0; font-size: 12px; color: var(--ink-muted); line-height: 1.6; }
+  .gh-panel-hint a { color: var(--accent-ink); }
+  .gh-panel-hint code { font-family: var(--font-mono); background: var(--surface-2); padding: 1px 5px; border-radius: 4px; }
+  .gh-panel-status { margin: 0; font-family: var(--font-mono); font-size: 12.5px; }
+  .gh-panel-status.ok { color: var(--good); }
+  .gh-panel-status.error { color: var(--warn); }
+
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 6px; }
+  .stat-card .label { font-family: var(--font-display); font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-faint); }
+  .stat-card .value { font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 26px; font-weight: 600; color: var(--ink); }
+  .stat-card .sub { font-size: 12.5px; color: var(--ink-muted); }
+  .stat-card.warn .value { color: var(--warn); }
+  .stat-card.good .value { color: var(--good); }
+  .stat-card.accent .value { color: var(--accent-ink); }
+
+  .notice { display: flex; gap: 12px; align-items: flex-start; background: var(--warn-bg); border: 1px solid var(--warn-border); color: var(--ink); border-radius: 10px; padding: 14px 16px; font-size: 13.5px; }
+  .notice.is-hidden { display: none; }
+  .notice .glyph { font-family: var(--font-display); font-weight: 700; color: var(--warn); font-size: 15px; line-height: 1.4; }
+  .notice ul { margin: 4px 0 0; padding-left: 18px; color: var(--ink-muted); }
+  .notice li { margin: 2px 0; }
+  .notice b { color: var(--warn); }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; }
+  .card-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid var(--border); gap: 12px; flex-wrap: wrap; }
+  .card-head h2 { font-family: var(--font-display); font-size: 15.5px; font-weight: 600; margin: 0; letter-spacing: 0.01em; }
+
+  .toolbar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; font-family: var(--font-display); font-size: 12.5px; font-weight: 600; letter-spacing: 0.02em; border-radius: 7px; padding: 7px 13px; cursor: pointer; border: 1px solid transparent; }
+  .btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .btn.primary { color: var(--accent-ink); background: var(--accent-soft); border-color: var(--accent); }
+  .btn.primary:hover { filter: brightness(1.03); }
+  .btn.ghost { color: var(--ink-muted); background: var(--surface); border-color: var(--border); }
+  .btn.ghost:hover { color: var(--warn); border-color: var(--warn-border); background: var(--warn-bg); }
+
+  .db-status { font-family: var(--font-mono); font-size: 12px; color: var(--ink-faint); padding: 10px 20px; border-top: 1px solid var(--border); background: var(--surface-2); }
+  .db-status.ok { color: var(--good); }
+  .db-status.error { color: var(--warn); }
+
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 1080px; }
+  thead th { text-align: left; font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); background: var(--surface-2); padding: 10px 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  thead th.num, td.num { text-align: right; }
+  tbody td { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--surface-2); }
+  tbody tr.is-warn { box-shadow: inset 3px 0 0 var(--warn); }
+  tbody tr.is-incomplete { box-shadow: inset 3px 0 0 var(--ink-faint); }
+
+  td.no-cell { font-family: var(--font-mono); color: var(--ink-faint); font-variant-numeric: tabular-nums; text-align: center; }
+
+  select.cell-select {
+    width: 100%; min-width: 120px; font-family: var(--font-body); font-size: 13px; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px;
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--ink-faint) 50%), linear-gradient(135deg, var(--ink-faint) 50%, transparent 50%);
+    background-position: calc(100% - 14px) center, calc(100% - 9px) center;
+    background-size: 5px 5px, 5px 5px; background-repeat: no-repeat; cursor: pointer;
+  }
+  select.cell-select:disabled { color: var(--ink-faint); background-color: var(--surface-2); cursor: not-allowed; background-image: none; }
+  select.cell-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  select.mat-select { min-width: 190px; }
+
+  input.manual-input {
+    display: block; width: 100%; min-width: 190px; margin-top: 6px; font-family: var(--font-body); font-size: 13px; color: var(--ink);
+    background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 6px; padding: 6px 8px;
+  }
+  input.manual-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  span.static-na { display: inline-block; font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-faint); padding: 6px 8px; }
+
+  td.wh-cell { font-family: var(--font-mono); font-size: 12.5px; color: var(--ink-muted); white-space: nowrap; }
+  td.wh-cell .missing { color: var(--warn); }
+
+  input.requi-input {
+    width: 64px; font-family: var(--font-mono); font-variant-numeric: tabular-nums; font-size: 13.5px; text-align: right; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--border); border-radius: 6px; padding: 6px 8px;
+  }
+  input.requi-input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+
+  td.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  td.stock-cell.zero { color: var(--warn); font-weight: 600; }
+
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px 3px 8px; border-radius: 999px; font-family: var(--font-display); font-size: 11.5px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+  .pill::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: none; }
+  .pill.good { background: var(--good-bg); color: var(--good); border: 1px solid var(--good-border); }
+  .pill.warn { background: var(--warn-bg); color: var(--warn); border: 1px solid var(--warn-border); }
+  .pill.idle { background: var(--surface-2); color: var(--ink-faint); border: 1px solid var(--border); }
+
+  .row-remove { width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface); color: var(--ink-faint); font-size: 14px; line-height: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; }
+  .row-remove:hover { color: var(--warn); border-color: var(--warn-border); background: var(--warn-bg); }
+
+  .source { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .source-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; box-shadow: var(--shadow); }
+  .source-card .tag { display: inline-block; font-family: var(--font-mono); font-size: 11px; color: var(--accent-ink); background: var(--accent-soft); border-radius: 5px; padding: 2px 7px; margin-bottom: 10px; }
+  .source-card h3 { font-family: var(--font-display); font-size: 14px; margin: 0 0 6px; }
+  .source-card p { margin: 0; font-size: 12.5px; color: var(--ink-muted); line-height: 1.55; }
+  .source-card code { font-family: var(--font-mono); font-size: 11.5px; background: var(--surface-2); padding: 1px 5px; border-radius: 4px; color: var(--ink); }
+
+  footer { text-align: center; font-size: 12px; color: var(--ink-faint); padding-top: 12px; line-height: 1.7; }
+
+  @media (max-width: 720px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .source { grid-template-columns: 1fr; }
+    .masthead { flex-direction: column; align-items: flex-start; }
+    .masthead-meta { text-align: left; }
+    .gh-panel-row label { min-width: 0; }
+  }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+  @media print {
+    :root {
+      --bg: #ffffff; --surface: #ffffff; --surface-2: #f6f6f6;
+      --ink: #111111; --ink-muted: #444444; --ink-faint: #767676;
+      --border: #cfcfcf; --accent-ink: #075169; --accent-soft: #eaf3f6;
+      --good: #1e8a5f; --good-bg: #eef8f2; --good-border: #bfe3d1;
+      --warn: #ad5316; --warn-bg: #fbeee0; --warn-border: #eec49a; --shadow: none;
+    }
+    @page { size: A4 landscape; margin: 12mm; }
+    body { padding: 0; }
+    .no-print { display: none !important; }
+    .card { box-shadow: none; border: 1px solid var(--border); break-inside: avoid; }
+    .stat-card { box-shadow: none; }
+    .table-scroll { overflow: visible; }
+    table { min-width: 0; width: 100%; font-size: 10.5px; }
+    thead th { padding: 6px 8px; }
+    tbody td { padding: 6px 8px; }
+    select.cell-select, select.mat-select { min-width: 0; width: auto; max-width: 100%; appearance: none; -webkit-appearance: none; border: none; background: transparent !important; background-image: none !important; padding: 2px 0; color: var(--ink); }
+    input.requi-input, input.manual-input { border: none; background: transparent !important; padding: 2px 0; color: var(--ink); }
+    input.manual-input { margin-top: 2px; }
+    tr { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="masthead">
+    <div class="masthead-text">
+      <p class="eyebrow">Shared · current-item-stock-report (GitHub)</p>
+      <h1>รายงานสต็อกอุปกรณ์สถานีไฟฟ้า</h1>
+      <p>เลือก kV → Mat Group → Mat des → Lead time → Material No. → Batch ทีละขั้น ระบบกรองตัวเลือกที่เหลือให้อัตโนมัติ ส่วน WH และ In Stock คำนวณจากฐานข้อมูลกลาง — <strong>ข้อมูลทุกอย่างในหน้านี้เก็บไว้ที่ GitHub repo สาธารณะ ทุกคนที่มีลิงก์นี้เห็นข้อมูลชุดเดียวกัน</strong></p>
+    </div>
+    <div class="masthead-meta">
+      แถวฐานข้อมูลอ้างอิง: <strong id="meta-rowcount">–</strong> รายการ<br>
+      โหลดล่าสุด: <strong id="meta-loaded">กำลังโหลด…</strong>
+    </div>
+  </header>
+
+  <div class="sync-bar">
+    <span class="sync-status" id="sync-status">กำลังเชื่อมต่อ GitHub…</span>
+    <div class="sync-actions no-print">
+      <button class="btn ghost" id="reload-btn" type="button">🔄 รีเฟรชข้อมูล</button>
+      <button class="btn ghost" id="gh-settings-btn" type="button">🔑 บัญชี GitHub</button>
+    </div>
+  </div>
+
+  <div class="gh-panel no-print" id="gh-panel" hidden>
+    <div class="gh-panel-row">
+      <label for="gh-token-input">GitHub Personal Access Token</label>
+      <input type="password" id="gh-token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+      <button class="btn primary" id="gh-token-save" type="button">บันทึก</button>
+      <button class="btn ghost" id="gh-token-clear" type="button">ล้าง token</button>
+    </div>
+    <p class="gh-panel-hint">
+      จำเป็นเฉพาะตอน<strong>แก้ไข/บันทึกข้อมูล</strong> (ดูอย่างเดียวไม่ต้องมี) ใช้สิทธิ์ขั้นต่ำ <code>public_repo</code> พอ —
+      <a href="https://github.com/settings/tokens/new?scopes=public_repo&description=current-item-stock-report" target="_blank" rel="noopener">สร้าง token ใหม่ที่นี่ ↗</a>
+      เก็บไว้ในเบราว์เซอร์นี้เท่านั้น (localStorage) ไม่ผ่านเซิร์ฟเวอร์อื่นใดนอกจาก GitHub โดยตรง
+    </p>
+    <p class="gh-panel-status" id="gh-panel-status"></p>
+  </div>
+
+  <section class="stats">
+    <div class="stat-card">
+      <span class="label">รายการที่กรอก</span>
+      <span class="value" id="stat-total">0</span>
+      <span class="sub">รายการในตาราง</span>
+    </div>
+    <div class="stat-card good">
+      <span class="label">Sufficient</span>
+      <span class="value" id="stat-good">0</span>
+      <span class="sub">สต็อกเพียงพอ</span>
+    </div>
+    <div class="stat-card warn">
+      <span class="label">Reorder</span>
+      <span class="value" id="stat-warn">0</span>
+      <span class="sub">ต้องสั่งซื้อเพิ่ม</span>
+    </div>
+    <div class="stat-card accent">
+      <span class="label">ระดับแรงดันที่ใช้</span>
+      <span class="value" id="stat-kv">–</span>
+      <span class="sub">kV</span>
+    </div>
+  </section>
+
+  <div class="notice is-hidden" id="notice-box">
+    <span class="glyph">!</span>
+    <div>
+      <div>มี <b id="notice-count">0</b> รายการที่เลือกไม่ครบ หรือหาข้อมูลคลังไม่พบ</div>
+      <ul id="notice-list"></ul>
+    </div>
+  </div>
+
+  <section class="card">
+    <div class="card-head">
+      <h2>รายการอุปกรณ์ (current item)</h2>
+      <div class="toolbar no-print">
+        <button class="btn primary" id="add-row-btn" type="button">+ เพิ่มรายการ</button>
+        <button class="btn ghost" id="clear-all-btn" type="button">ล้างทั้งหมด</button>
+        <button class="btn primary" id="update-db-btn" type="button">⭯ อัปเดตฐานข้อมูล</button>
+        <button class="btn ghost" id="export-pdf-btn" type="button">📄 ส่งออก PDF</button>
+        <input type="file" id="db-file-input" accept=".xls,.xlsx,.htm,.html" hidden>
+      </div>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>kV</th>
+            <th>Mat Group</th>
+            <th>Mat des</th>
+            <th class="num">Lead time (วัน)</th>
+            <th>Material No.</th>
+            <th>Batch</th>
+            <th>WH</th>
+            <th class="num">In Stock</th>
+            <th class="num">Requi.</th>
+            <th>Decision</th>
+            <th class="no-print"></th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+    <div class="db-status" id="db-status">กำลังโหลดฐานข้อมูล…</div>
+  </section>
+
+  <section class="source no-print">
+    <div class="source-card">
+      <span class="tag">data/database.json</span>
+      <h3>ฐานข้อมูลกลาง</h3>
+      <p>ล้างแถวคลังที่ติด "x" อัตโนมัติ (เหมือนมาโคร <code>DeleteRowsWithX</code>) — ใครก็ตามกด "อัปเดตฐานข้อมูล" จะเขียนทับไฟล์นี้บน GitHub ทุกคนที่เปิดหน้านี้จะได้ชุดข้อมูลใหม่</p>
+    </div>
+    <div class="source-card">
+      <span class="tag">data/items.json</span>
+      <h3>รายการที่กรอก</h3>
+      <p>ทุกการเพิ่ม/แก้/ลบรายการ จะถูกบันทึกกลับไปที่ GitHub อัตโนมัติ (ต้องมี token) คนอื่นที่กดรีเฟรชหรือเปิดหน้าใหม่จะเห็นข้อมูลล่าสุด</p>
+    </div>
+    <div class="source-card">
+      <span class="tag">วิธีคำนวณ</span>
+      <h3>Stock &amp; Decision</h3>
+      <p>WH หาแบบอัตโนมัติจากคลังที่ตรงกับ 6 เงื่อนไขที่เลือก, In Stock = ยอดรวมคงเหลือ − ยอดที่ถูกใช้ไปแล้วโดยรายการซ้ำแถวบนกว่า, Decision = <code>IF(Requi &gt; In Stock, "Reorder", "Sufficient")</code></p>
+    </div>
+  </section>
+
+  <footer>
+    current-item-stock-report · เก็บข้อมูลบน GitHub public repository — ลิงก์นี้เปิดดูได้โดยไม่ต้อง login แต่การแก้ไขต้องมี GitHub token ของตัวเอง<br>
+    ownership: paokunggg/current-item-stock-report
+  </footer>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  var OWNER = "paokunggg";
+  var REPO = "current-item-stock-report";
+  var BRANCH = "main";
+  var API_BASE = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/contents/";
+  var TOKEN_KEY = "cisr_gh_token";
+
+  var ghToken = localStorage.getItem(TOKEN_KEY) || "";
+  var ghUser = "";
+
+  var RAW = [];
+  var rows = [];
+  var nextId = 1;
+  var dbSha = null;
+  var itemsSha = null;
+  var dataLoaded = false;
+
+  // ---------------------------------------------------------------
+  // base64 <-> UTF-8 helpers (atob/btoa are byte-oriented, not UTF-8 aware)
+  // ---------------------------------------------------------------
+  function b64EncodeUtf8(str) {
+    var bytes = new TextEncoder().encode(str);
+    var binary = "";
+    for (var i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+    return btoa(binary);
+  }
+  function b64DecodeUtf8(b64) {
+    var binary = atob(b64.replace(/\n/g, ""));
+    var bytes = new Uint8Array(binary.length);
+    for (var i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+    return new TextDecoder("utf-8").decode(bytes);
+  }
+
+  function authHeaders() {
+    var h = { "Accept": "application/vnd.github+json" };
+    if (ghToken) h["Authorization"] = "Bearer " + ghToken;
+    return h;
+  }
+
+  async function ghGetFile(path) {
+    var res = await fetch(API_BASE + path + "?ref=" + BRANCH, { headers: authHeaders() });
+    if (res.status === 404) return { sha: null, text: null };
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    var json = await res.json();
+    return { sha: json.sha, text: b64DecodeUtf8(json.content) };
+  }
+
+  async function ghPutFile(path, text, sha, message) {
+    if (!ghToken) throw new Error("ยังไม่ได้ตั้งค่า GitHub token");
+    var body = { message: message, content: b64EncodeUtf8(text), branch: BRANCH };
+    if (sha) body.sha = sha;
+    var doPut = function () {
+      return fetch(API_BASE + path, {
+        method: "PUT",
+        headers: Object.assign({ "Content-Type": "application/json" }, authHeaders()),
+        body: JSON.stringify(body)
+      });
+    };
+    var res = await doPut();
+    if (res.status === 409 || res.status === 422) {
+      var fresh = await ghGetFile(path);
+      body.sha = fresh.sha;
+      res = await doPut();
+    }
+    if (!res.ok) {
+      var errJson = await res.json().catch(function () { return {}; });
+      throw new Error(errJson.message || ("HTTP " + res.status));
+    }
+    var out = await res.json();
+    return out.content.sha;
+  }
+
+  async function verifyToken() {
+    if (!ghToken) return null;
+    try {
+      var res = await fetch("https://api.github.com/user", { headers: authHeaders() });
+      if (!res.ok) return null;
+      var json = await res.json();
+      return json.login;
+    } catch (e) { return null; }
+  }
+
+  // ---------------------------------------------------------------
+  // GitHub token settings panel
+  // ---------------------------------------------------------------
+  var ghPanel = document.getElementById("gh-panel");
+  var ghTokenInput = document.getElementById("gh-token-input");
+  var ghPanelStatus = document.getElementById("gh-panel-status");
+  var syncStatusEl = document.getElementById("sync-status");
+
+  function setGhPanelStatus(text, kind) {
+    ghPanelStatus.textContent = text;
+    ghPanelStatus.classList.remove("ok", "error");
+    if (kind) ghPanelStatus.classList.add(kind);
+  }
+
+  function setSyncStatus(text, kind) {
+    syncStatusEl.textContent = text;
+    syncStatusEl.classList.remove("ok", "error");
+    if (kind) syncStatusEl.classList.add(kind);
+  }
+
+  async function refreshConnectionStatus() {
+    if (!ghToken) {
+      setSyncStatus("โหมดดูอย่างเดียว — ยังไม่ได้ตั้งค่า GitHub token (แก้ไขจะไม่ถูกบันทึก)");
+      setGhPanelStatus("ยังไม่ได้ตั้งค่า token");
+      return;
+    }
+    var login = await verifyToken();
+    if (login) {
+      ghUser = login;
+      setSyncStatus("เชื่อมต่อ GitHub ในนาม " + login + " — พร้อมบันทึกการแก้ไข", "ok");
+      setGhPanelStatus("เชื่อมต่อสำเร็จ ในนาม " + login, "ok");
+    } else {
+      setSyncStatus("Token ไม่ถูกต้องหรือหมดอายุ — โหมดดูอย่างเดียว", "error");
+      setGhPanelStatus("ตรวจสอบ token ไม่สำเร็จ — ลองสร้างใหม่", "error");
+    }
+  }
+
+  document.getElementById("gh-settings-btn").addEventListener("click", function () {
+    ghPanel.hidden = !ghPanel.hidden;
+    if (!ghPanel.hidden) ghTokenInput.value = ghToken;
+  });
+
+  document.getElementById("gh-token-save").addEventListener("click", async function () {
+    var v = ghTokenInput.value.trim();
+    if (!v) { setGhPanelStatus("กรอก token ก่อนกดบันทึก", "error"); return; }
+    setGhPanelStatus("กำลังตรวจสอบ…");
+    ghToken = v;
+    var login = await verifyToken();
+    if (!login) {
+      setGhPanelStatus("Token นี้ใช้ไม่ได้ ตรวจสอบสิทธิ์ (ต้องมี public_repo)", "error");
+      ghToken = localStorage.getItem(TOKEN_KEY) || "";
+      return;
+    }
+    localStorage.setItem(TOKEN_KEY, v);
+    await refreshConnectionStatus();
+  });
+
+  document.getElementById("gh-token-clear").addEventListener("click", function () {
+    ghToken = "";
+    ghUser = "";
+    localStorage.removeItem(TOKEN_KEY);
+    ghTokenInput.value = "";
+    refreshConnectionStatus();
+  });
+
+  // ---------------------------------------------------------------
+  // Cascading dropdown data model (unchanged logic from the offline version)
+  // ---------------------------------------------------------------
+  function uniqueWhere(idx, filters) {
+    var seen = new Map();
+    for (var i = 0; i < RAW.length; i++) {
+      var r = RAW[i];
+      var ok = true;
+      for (var k = 0; k < filters.length; k++) {
+        if (String(r[filters[k][0]]) !== String(filters[k][1])) { ok = false; break; }
+      }
+      if (!ok) continue;
+      var v = r[idx];
+      var key = String(v);
+      if (!seen.has(key)) seen.set(key, v);
+    }
+    var out = Array.from(seen.values());
+    out.sort(function (a, b) {
+      var na = Number(a), nb = Number(b);
+      if (!isNaN(na) && !isNaN(nb)) return na - nb;
+      return String(a).localeCompare(String(b), "th");
+    });
+    return out;
+  }
+
+  function matchRows(filters) {
+    var out = [];
+    for (var i = 0; i < RAW.length; i++) {
+      var r = RAW[i];
+      var ok = true;
+      for (var k = 0; k < filters.length; k++) {
+        if (String(r[filters[k][0]]) !== String(filters[k][1])) { ok = false; break; }
+      }
+      if (ok) out.push(r);
+    }
+    return out;
+  }
+
+  var LEVELS = [
+    { key: "kv", idx: 0, label: "เลือก kV" },
+    { key: "mg", idx: 1, label: "เลือก Mat Group" },
+    { key: "md", idx: 2, label: "เลือก Mat des" },
+    { key: "lt", idx: 3, label: "เลือก Lead time" },
+    { key: "mn", idx: 4, label: "เลือก Material No." },
+    { key: "batch", idx: 5, label: "เลือก Batch" }
+  ];
+
+  var MANUAL_MD = " __manual__ ";
+
+  function newRow(preset) {
+    var r = { id: nextId++, kv: "", mg: "", md: "", lt: "", mn: "", batch: "", requi: "", mdText: "" };
+    if (preset) Object.assign(r, preset);
+    return r;
+  }
+
+  function rowFilters(row, uptoLevelIndex) {
+    var f = [];
+    for (var i = 0; i <= uptoLevelIndex; i++) {
+      var lvl = LEVELS[i];
+      var v = row[lvl.key];
+      if (v === "" || v === undefined) break;
+      f.push([lvl.idx, v]);
+    }
+    return f;
+  }
+
+  function computeWH(row) {
+    var filters = rowFilters(row, 5);
+    if (filters.length < 6) return { storages: [], stockRaw: 0 };
+    var matched = matchRows(filters);
+    var storages = Array.from(new Set(matched.map(function (r) { return r[6]; })));
+    var stockRaw = matched.reduce(function (sum, r) { return sum + (Number(r[7]) || 0); }, 0);
+    return { storages: storages, stockRaw: stockRaw };
+  }
+
+  function comboKey(row) {
+    return [row.kv, row.mg, row.md, row.lt, row.mn, row.batch].join("␟");
+  }
+
+  // ---------------------------------------------------------------
+  // Sync to GitHub — debounced so a burst of cascading selections
+  // becomes one commit instead of six.
+  // ---------------------------------------------------------------
+  var saveItemsTimer = null;
+  function scheduleSaveItems() {
+    if (!dataLoaded) return;
+    clearTimeout(saveItemsTimer);
+    saveItemsTimer = setTimeout(persistItems, 800);
+  }
+
+  async function persistItems() {
+    if (!ghToken) {
+      setSyncStatus("ยังไม่ได้ตั้งค่า GitHub token — การเปลี่ยนแปลงนี้ยังไม่ถูกบันทึกให้คนอื่นเห็น (กด 🔑 บัญชี GitHub)", "error");
+      return;
+    }
+    setSyncStatus("กำลังบันทึก…");
+    try {
+      var payload = rows.map(function (r) {
+        return {
+          id: r.id, kv: r.kv, mg: r.mg, md: r.md, mdText: r.mdText,
+          lt: r.lt, mn: r.mn, batch: r.batch, requi: r.requi,
+          updatedBy: ghUser, updatedAt: new Date().toISOString()
+        };
+      });
+      var text = JSON.stringify(payload, null, 2);
+      itemsSha = await ghPutFile("data/items.json", text, itemsSha, "Update items (" + (ghUser || "anonymous") + ")");
+      setSyncStatus("บันทึกแล้วโดย " + ghUser + " · " + new Date().toLocaleTimeString("th-TH"), "ok");
+    } catch (err) {
+      setSyncStatus("บันทึกไม่สำเร็จ: " + err.message, "error");
+    }
+  }
+
+  async function persistDatabase(newRawArray) {
+    setDbStatus("กำลังอัปโหลดฐานข้อมูลใหม่ (" + newRawArray.length.toLocaleString("th-TH") + " แถว)…");
+    try {
+      var text = JSON.stringify(newRawArray);
+      dbSha = await ghPutFile("data/database.json", text, dbSha, "Update database (" + (ghUser || "anonymous") + ") — " + newRawArray.length + " rows");
+      setDbStatus(
+        "อัปเดตฐานข้อมูลสำเร็จ โดย " + ghUser + " — " + newRawArray.length.toLocaleString("th-TH") +
+        " แถว · " + new Date().toLocaleString("th-TH") + " · ทุกคนที่รีเฟรชจะเห็นชุดใหม่นี้",
+        "ok"
+      );
+      return true;
+    } catch (err) {
+      setDbStatus("อัปโหลดฐานข้อมูลไม่สำเร็จ: " + err.message, "error");
+      return false;
+    }
+  }
+
+  // ---------------------------------------------------------------
+  // Render
+  // ---------------------------------------------------------------
+  function render() {
+    var tbody = document.getElementById("table-body");
+    tbody.innerHTML = "";
+
+    var reservedSoFar = new Map();
+
+    rows.forEach(function (row, index) {
+      var tr = document.createElement("tr");
+
+      var isManualMd = row.md === MANUAL_MD;
+      var complete = isManualMd
+        ? (row.kv !== "" && row.mg !== "" && row.md !== "")
+        : LEVELS.every(function (l) { return row[l.key] !== ""; });
+
+      var wh = null, stockDisplay = null;
+      if (complete && isManualMd) {
+        stockDisplay = 0;
+      } else if (complete) {
+        wh = computeWH(row);
+        var key = comboKey(row);
+        var alreadyReserved = reservedSoFar.get(key) || 0;
+        stockDisplay = wh.stockRaw - alreadyReserved;
+        reservedSoFar.set(key, alreadyReserved + (Number(row.requi) || 0));
+      }
+
+      var requiNum = Number(row.requi) || 0;
+      var decision = null;
+      if (complete) {
+        decision = requiNum > stockDisplay ? { text: "Reorder " + (requiNum - stockDisplay), cls: "warn" } : { text: "Sufficient", cls: "good" };
+      }
+
+      if (decision && decision.cls === "warn") tr.classList.add("is-warn");
+      else if (!complete) tr.classList.add("is-incomplete");
+
+      var tdNo = document.createElement("td");
+      tdNo.className = "no-cell";
+      tdNo.textContent = index + 1;
+      tr.appendChild(tdNo);
+
+      LEVELS.forEach(function (lvl, li) {
+        var td = document.createElement("td");
+
+        if (isManualMd && li > 2) {
+          var na = document.createElement("span");
+          na.className = "static-na";
+          na.textContent = "ไม่มี";
+          td.appendChild(na);
+          tr.appendChild(td);
+          return;
+        }
+
+        var select = document.createElement("select");
+        select.className = "cell-select" + (lvl.key === "md" ? " mat-select" : "");
+
+        var priorComplete = li === 0 || LEVELS.slice(0, li).every(function (l) { return row[l.key] !== ""; });
+        select.disabled = !priorComplete;
+
+        var placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = priorComplete ? lvl.label : "—";
+        select.appendChild(placeholder);
+
+        if (priorComplete) {
+          var options = uniqueWhere(lvl.idx, rowFilters(row, li - 1));
+          options.forEach(function (opt) {
+            var o = document.createElement("option");
+            o.value = opt;
+            var isNumericLt = lvl.key === "lt" && opt !== "" && !isNaN(Number(opt));
+            o.textContent = isNumericLt ? Number(opt).toLocaleString("th-TH") : opt;
+            if (String(row[lvl.key]) === String(opt)) o.selected = true;
+            select.appendChild(o);
+          });
+          if (lvl.key === "md") {
+            var manualOpt = document.createElement("option");
+            manualOpt.value = MANUAL_MD;
+            manualOpt.textContent = "ไม่มี (พิมพ์เอง)";
+            if (row.md === MANUAL_MD) manualOpt.selected = true;
+            select.appendChild(manualOpt);
+          }
+        }
+        if (row[lvl.key] === "") placeholder.selected = true;
+
+        select.addEventListener("change", function () {
+          row[lvl.key] = select.value;
+          row.mdText = "";
+          for (var j = li + 1; j < LEVELS.length; j++) row[LEVELS[j].key] = "";
+          render();
+          scheduleSaveItems();
+        });
+
+        td.appendChild(select);
+
+        if (lvl.key === "md" && isManualMd) {
+          var manualInput = document.createElement("input");
+          manualInput.type = "text";
+          manualInput.className = "manual-input";
+          manualInput.placeholder = "พิมพ์รายละเอียดเอง…";
+          manualInput.value = row.mdText || "";
+          manualInput.addEventListener("change", function () {
+            row.mdText = manualInput.value;
+            scheduleSaveItems();
+          });
+          td.appendChild(manualInput);
+        }
+
+        tr.appendChild(td);
+      });
+
+      var tdWH = document.createElement("td");
+      tdWH.className = "wh-cell";
+      if (!complete) {
+        tdWH.textContent = "—";
+      } else if (isManualMd) {
+        tdWH.textContent = "ไม่มี";
+      } else if (wh.storages.length === 0) {
+        var span = document.createElement("span");
+        span.className = "missing";
+        span.textContent = "ไม่มีข้อมูล";
+        tdWH.appendChild(span);
+      } else {
+        tdWH.textContent = wh.storages.join(" / ");
+      }
+      tr.appendChild(tdWH);
+
+      var tdStock = document.createElement("td");
+      tdStock.className = "num stock-cell";
+      if (!complete) {
+        tdStock.textContent = "–";
+      } else {
+        tdStock.textContent = stockDisplay.toLocaleString("th-TH");
+        if (stockDisplay <= 0) tdStock.classList.add("zero");
+      }
+      tr.appendChild(tdStock);
+
+      var tdRequi = document.createElement("td");
+      tdRequi.className = "num";
+      var input = document.createElement("input");
+      input.type = "number";
+      input.min = "0";
+      input.className = "requi-input";
+      input.value = row.requi;
+      input.placeholder = "0";
+      input.addEventListener("change", function () {
+        row.requi = input.value;
+        render();
+        scheduleSaveItems();
+      });
+      tdRequi.appendChild(input);
+      tr.appendChild(tdRequi);
+
+      var tdDecision = document.createElement("td");
+      var pill = document.createElement("span");
+      if (!complete) {
+        pill.className = "pill idle";
+        pill.textContent = "รอเลือกให้ครบ";
+      } else {
+        pill.className = "pill " + decision.cls;
+        pill.textContent = decision.text;
+      }
+      tdDecision.appendChild(pill);
+      tr.appendChild(tdDecision);
+
+      var tdRemove = document.createElement("td");
+      tdRemove.className = "no-print";
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "row-remove";
+      btn.setAttribute("aria-label", "ลบรายการที่ " + (index + 1));
+      btn.textContent = "×";
+      btn.addEventListener("click", function () {
+        rows.splice(index, 1);
+        render();
+        scheduleSaveItems();
+      });
+      tdRemove.appendChild(btn);
+      tr.appendChild(tdRemove);
+
+      tbody.appendChild(tr);
+    });
+
+    updateSummary();
+  }
+
+  function updateSummary() {
+    var good = 0, warn = 0, incomplete = 0;
+    var kvSet = new Set();
+    var issues = [];
+
+    var reservedSoFar = new Map();
+    rows.forEach(function (row, index) {
+      var isManualMd = row.md === MANUAL_MD;
+      var complete = isManualMd
+        ? (row.kv !== "" && row.mg !== "" && row.md !== "")
+        : LEVELS.every(function (l) { return row[l.key] !== ""; });
+      if (row.kv) kvSet.add(row.kv);
+      if (!complete) {
+        incomplete++;
+        issues.push("รายการที่ " + (index + 1) + " — ยังเลือกไม่ครบทุกขั้น");
+        return;
+      }
+
+      var stockDisplay;
+      if (isManualMd) {
+        stockDisplay = 0;
+      } else {
+        var wh = computeWH(row);
+        var key = comboKey(row);
+        var alreadyReserved = reservedSoFar.get(key) || 0;
+        stockDisplay = wh.stockRaw - alreadyReserved;
+        reservedSoFar.set(key, alreadyReserved + (Number(row.requi) || 0));
+        if (wh.storages.length === 0) {
+          issues.push("รายการที่ " + (index + 1) + " — ไม่พบคลัง (WH) ที่ตรงกับเงื่อนไขที่เลือก");
+        }
+      }
+      var requiNum = Number(row.requi) || 0;
+      if (requiNum > stockDisplay) warn++; else good++;
+    });
+
+    document.getElementById("stat-total").textContent = rows.length;
+    document.getElementById("stat-good").textContent = good;
+    document.getElementById("stat-warn").textContent = warn;
+    document.getElementById("stat-kv").textContent = kvSet.size ? Array.from(kvSet).sort(function (a, b) { return Number(a) - Number(b); }).join(", ") : "–";
+
+    var notice = document.getElementById("notice-box");
+    if (issues.length === 0) {
+      notice.classList.add("is-hidden");
+    } else {
+      notice.classList.remove("is-hidden");
+      document.getElementById("notice-count").textContent = issues.length;
+      var list = document.getElementById("notice-list");
+      list.innerHTML = "";
+      issues.forEach(function (msg) {
+        var li = document.createElement("li");
+        li.textContent = msg;
+        list.appendChild(li);
+      });
+    }
+  }
+
+  document.getElementById("add-row-btn").addEventListener("click", function () {
+    rows.push(newRow());
+    render();
+    scheduleSaveItems();
+  });
+
+  document.getElementById("clear-all-btn").addEventListener("click", function () {
+    if (rows.length === 0) return;
+    var ok = window.confirm("ล้างรายการทั้งหมด " + rows.length + " รายการออกจากตาราง? การกระทำนี้จะบันทึกทับข้อมูลบน GitHub ทันที");
+    if (!ok) return;
+    rows = [];
+    render();
+    scheduleSaveItems();
+  });
+
+  document.getElementById("export-pdf-btn").addEventListener("click", function () {
+    window.print();
+  });
+
+  function sanitizeRow(row) {
+    for (var i = 0; i < LEVELS.length; i++) {
+      var lvl = LEVELS[i];
+      if (row[lvl.key] === "") break;
+      if (lvl.key === "md" && row.md === MANUAL_MD) break;
+      var options = uniqueWhere(lvl.idx, rowFilters(row, i - 1));
+      var stillValid = options.some(function (o) { return String(o) === String(row[lvl.key]); });
+      if (!stillValid) {
+        for (var j = i; j < LEVELS.length; j++) row[LEVELS[j].key] = "";
+        break;
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------
+  // Update database — parses the same SAP-style "HTML saved as .xls"
+  // export as before, then writes the result to data/database.json
+  // on GitHub so every viewer gets the new dataset.
+  // ---------------------------------------------------------------
+  var dbFileInput = document.getElementById("db-file-input");
+  var dbStatusEl = document.getElementById("db-status");
+
+  function setDbStatus(text, kind) {
+    dbStatusEl.textContent = text;
+    dbStatusEl.classList.remove("ok", "error");
+    if (kind) dbStatusEl.classList.add(kind);
+  }
+
+  function normalizeCell(s) {
+    return String(s == null ? "" : s).replace(/\s+/g, " ").trim();
+  }
+
+  function parseStockExport(html) {
+    var cleaned = html.replace(/<br\s*\/?>/gi, " ");
+    var doc = new DOMParser().parseFromString(cleaned, "text/html");
+    var trs = doc.querySelectorAll("table tr");
+    if (trs.length < 2) throw new Error("ไม่พบตารางข้อมูลในไฟล์นี้");
+
+    var headerCells = Array.from(trs[0].children).map(function (c) { return normalizeCell(c.textContent); });
+    var headerMap = {};
+    headerCells.forEach(function (name, idx) {
+      if (name && !(name in headerMap)) headerMap[name] = idx;
+    });
+
+    var required = ["Storage", "Material Group", "Material Description", "Material No.", "Batch", "kV", "soh", "Age L/I YEAR", "Age L/I Month"];
+    var missing = required.filter(function (name) { return !(name in headerMap); });
+    if (missing.length) {
+      throw new Error("รูปแบบไฟล์ไม่ตรงที่คาด ขาดคอลัมน์: " + missing.join(", "));
+    }
+
+    var out = [];
+    for (var r = 1; r < trs.length; r++) {
+      var cells = Array.from(trs[r].children).map(function (c) { return normalizeCell(c.textContent); });
+      if (cells.length < headerCells.length) continue;
+
+      var storage = cells[headerMap["Storage"]];
+      if (!storage || storage.toLowerCase().indexOf("x") !== -1) continue;
+
+      var matNo = cells[headerMap["Material No."]];
+      var kv = cells[headerMap["kV"]];
+      if (!matNo || !kv) continue;
+
+      var matGroup = cells[headerMap["Material Group"]];
+      var matDes = cells[headerMap["Material Description"]];
+      var batch = cells[headerMap["Batch"]];
+      var soh = parseFloat(String(cells[headerMap["soh"]]).replace(/,/g, "")) || 0;
+      var ageY = parseFloat(cells[headerMap["Age L/I YEAR"]]) || 0;
+      var ageM = parseFloat(cells[headerMap["Age L/I Month"]]) || 0;
+      var leadTime = ageY * 365 + ageM * 30;
+
+      out.push([kv, matGroup, matDes, leadTime, matNo, batch, storage, soh]);
+    }
+    return out;
+  }
+
+  document.getElementById("update-db-btn").addEventListener("click", function () {
+    if (!ghToken) {
+      setDbStatus("ต้องตั้งค่า GitHub token ก่อนอัปเดตฐานข้อมูล (กด 🔑 บัญชี GitHub ด้านบน)", "error");
+      return;
+    }
+    dbFileInput.click();
+  });
+
+  dbFileInput.addEventListener("change", function (evt) {
+    var file = evt.target.files[0];
+    if (!file) return;
+    setDbStatus("กำลังอ่านไฟล์ " + file.name + " …");
+
+    var reader = new FileReader();
+    reader.onerror = function () {
+      setDbStatus("อ่านไฟล์ไม่สำเร็จ: " + file.name, "error");
+      dbFileInput.value = "";
+    };
+    reader.onload = async function (evt2) {
+      try {
+        var decoder = new TextDecoder("windows-874");
+        var html = decoder.decode(evt2.target.result);
+        var newRaw = parseStockExport(html);
+        if (newRaw.length === 0) {
+          throw new Error("อ่านไฟล์ได้ แต่ไม่พบแถวข้อมูลที่ใช้ได้เลย");
+        }
+        var ok = await persistDatabase(newRaw);
+        if (ok) {
+          RAW = newRaw;
+          rows.forEach(sanitizeRow);
+          document.getElementById("meta-rowcount").textContent = RAW.length.toLocaleString("th-TH");
+          render();
+          scheduleSaveItems();
+        }
+      } catch (err) {
+        setDbStatus("อัปเดตฐานข้อมูลไม่สำเร็จ: " + err.message, "error");
+      }
+      dbFileInput.value = "";
+    };
+    reader.readAsArrayBuffer(file);
+  });
+
+  // ---------------------------------------------------------------
+  // Initial load + manual refresh
+  // ---------------------------------------------------------------
+  async function loadAll() {
+    setSyncStatus("กำลังโหลดข้อมูลจาก GitHub…");
+    try {
+      var results = await Promise.all([ghGetFile("data/database.json"), ghGetFile("data/items.json")]);
+      var dbFile = results[0], itemsFile = results[1];
+
+      RAW = dbFile.text ? JSON.parse(dbFile.text) : [];
+      dbSha = dbFile.sha;
+
+      var itemsRaw = itemsFile.text ? JSON.parse(itemsFile.text) : [];
+      rows = itemsRaw.map(function (r) { return newRow(r); });
+      itemsSha = itemsFile.sha;
+      nextId = rows.reduce(function (m, r) { return Math.max(m, r.id || 0); }, 0) + 1;
+
+      document.getElementById("meta-rowcount").textContent = RAW.length.toLocaleString("th-TH");
+      document.getElementById("meta-loaded").textContent = new Date().toLocaleString("th-TH");
+      setDbStatus("ฐานข้อมูลปัจจุบัน: " + RAW.length.toLocaleString("th-TH") + " แถว (โหลดจาก GitHub)", "ok");
+
+      dataLoaded = true;
+      render();
+      await refreshConnectionStatus();
+    } catch (err) {
+      setSyncStatus("โหลดข้อมูลไม่สำเร็จ: " + err.message, "error");
+      setDbStatus("โหลดฐานข้อมูลไม่สำเร็จ: " + err.message, "error");
+    }
+  }
+
+  document.getElementById("reload-btn").addEventListener("click", function () {
+    if (dataLoaded && !window.confirm("รีเฟรชจะดึงข้อมูลล่าสุดจาก GitHub มาแทนที่หน้าจอนี้ — การแก้ไขที่ยังไม่บันทึกจะหายไป ดำเนินการต่อ?")) return;
+    loadAll();
+  });
+
+  loadAll();
+})();
+</script>
+</body>
+</html>
