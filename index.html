@@ -223,7 +223,7 @@
     <div class="masthead-text">
       <p class="eyebrow">Shared · current-item-stock-report (GitHub)</p>
       <h1>รายงานสต็อกอุปกรณ์สถานีไฟฟ้า</h1>
-      <p>เลือก kV → Mat Group → Mat des → Lead time → Material No. → Batch ทีละขั้น ระบบกรองตัวเลือกที่เหลือให้อัตโนมัติ ส่วน WH และ In Stock คำนวณจากฐานข้อมูลกลาง — <strong>ข้อมูลทุกอย่างในหน้านี้เก็บไว้ที่ GitHub repo สาธารณะ ทุกคนที่มีลิงก์นี้เห็นข้อมูลชุดเดียวกัน</strong></p>
+      <p>เลือก kV → Mat Group → Mat des → Lead time → Material No. → Batch ทีละขั้น ระบบกรองตัวเลือกที่เหลือให้อัตโนมัติ ส่วน WH และ In Stock คำนวณจากฐานข้อมูลกลาง — <strong>ข้อมูลทุกอย่างในหน้านี้เก็บไว้ที่ GitHub repo สาธารณะ ทุกคนที่มีลิงก์นี้เห็นข้อมูลชุดเดียวกัน แก้ไขได้ทันทีไม่ต้องมีบัญชี GitHub</strong></p>
     </div>
     <div class="masthead-meta">
       แถวฐานข้อมูลอ้างอิง: <strong id="meta-rowcount">–</strong> รายการ<br>
@@ -232,24 +232,23 @@
   </header>
 
   <div class="sync-bar">
-    <span class="sync-status" id="sync-status">กำลังเชื่อมต่อ GitHub…</span>
+    <span class="sync-status" id="sync-status">กำลังเชื่อมต่อ…</span>
     <div class="sync-actions no-print">
       <button class="btn ghost" id="reload-btn" type="button">🔄 รีเฟรชข้อมูล</button>
-      <button class="btn ghost" id="gh-settings-btn" type="button">🔑 บัญชี GitHub</button>
+      <button class="btn ghost" id="gh-settings-btn" type="button">👤 ชื่อผู้ใช้</button>
     </div>
   </div>
 
   <div class="gh-panel no-print" id="gh-panel" hidden>
     <div class="gh-panel-row">
-      <label for="gh-token-input">GitHub Personal Access Token</label>
-      <input type="password" id="gh-token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" autocomplete="off">
+      <label for="gh-token-input">ชื่อของคุณ (แสดงในประวัติการแก้ไข)</label>
+      <input type="text" id="gh-token-input" placeholder="เช่น สมชาย, กองการไฟฟ้า" autocomplete="off">
       <button class="btn primary" id="gh-token-save" type="button">บันทึก</button>
-      <button class="btn ghost" id="gh-token-clear" type="button">ล้าง token</button>
+      <button class="btn ghost" id="gh-token-clear" type="button">ล้าง</button>
     </div>
     <p class="gh-panel-hint">
-      จำเป็นเฉพาะตอน<strong>แก้ไข/บันทึกข้อมูล</strong> (ดูอย่างเดียวไม่ต้องมี) ใช้สิทธิ์ขั้นต่ำ <code>public_repo</code> พอ —
-      <a href="https://github.com/settings/tokens/new?scopes=public_repo&description=current-item-stock-report" target="_blank" rel="noopener">สร้าง token ใหม่ที่นี่ ↗</a>
-      เก็บไว้ในเบราว์เซอร์นี้เท่านั้น (localStorage) ไม่ผ่านเซิร์ฟเวอร์อื่นใดนอกจาก GitHub โดยตรง
+      ไม่บังคับ — ใส่ไว้เพื่อให้รู้ว่าใครแก้ไขรายการล่าสุด (เก็บไว้ในเบราว์เซอร์นี้เท่านั้น) ไม่ใส่ก็แก้ไขได้ตามปกติ
+      จะขึ้นเป็น "ไม่ระบุชื่อ" แทน
     </p>
     <p class="gh-panel-status" id="gh-panel-status"></p>
   </div>
@@ -329,7 +328,7 @@
     <div class="source-card">
       <span class="tag">data/items.json</span>
       <h3>รายการที่กรอก</h3>
-      <p>ทุกการเพิ่ม/แก้/ลบรายการ จะถูกบันทึกกลับไปที่ GitHub อัตโนมัติ (ต้องมี token) คนอื่นที่กดรีเฟรชหรือเปิดหน้าใหม่จะเห็นข้อมูลล่าสุด</p>
+      <p>ทุกการเพิ่ม/แก้/ลบรายการ จะถูกบันทึกกลับไปที่ GitHub อัตโนมัติผ่านตัวกลาง (ไม่ต้องมีบัญชี GitHub) คนอื่นที่กดรีเฟรชหรือเปิดหน้าใหม่จะเห็นข้อมูลล่าสุด</p>
     </div>
     <div class="source-card">
       <span class="tag">วิธีคำนวณ</span>
@@ -339,7 +338,7 @@
   </section>
 
   <footer>
-    current-item-stock-report · เก็บข้อมูลบน GitHub public repository — ลิงก์นี้เปิดดูได้โดยไม่ต้อง login แต่การแก้ไขต้องมี GitHub token ของตัวเอง<br>
+    current-item-stock-report · เก็บข้อมูลบน GitHub public repository — ลิงก์นี้เปิดดูและแก้ไขได้โดยไม่ต้อง login หรือมีบัญชี GitHub<br>
     ownership: paokunggg/current-item-stock-report
   </footer>
 
@@ -353,10 +352,14 @@
   var REPO = "current-item-stock-report";
   var BRANCH = "main";
   var API_BASE = "https://api.github.com/repos/" + OWNER + "/" + REPO + "/contents/";
-  var TOKEN_KEY = "cisr_gh_token";
+  // Writes go through this Worker instead of straight to the GitHub API —
+  // it holds the real GitHub token server-side (never shipped to the
+  // browser) so anyone with the page link can save changes without needing
+  // their own GitHub account. See cisr-worker/worker.js for the proxy.
+  var WORKER_URL = "https://current-item-stock-report-proxy.cisr-worker.workers.dev";
+  var NAME_KEY = "cisr_display_name";
 
-  var ghToken = localStorage.getItem(TOKEN_KEY) || "";
-  var ghUser = "";
+  var ghUser = localStorage.getItem(NAME_KEY) || "";
 
   var RAW = [];
   var rows = [];
@@ -381,57 +384,34 @@
     return new TextDecoder("utf-8").decode(bytes);
   }
 
-  function authHeaders() {
-    var h = { "Accept": "application/vnd.github+json" };
-    if (ghToken) h["Authorization"] = "Bearer " + ghToken;
-    return h;
-  }
-
+  // Reads go straight to the public GitHub API — no auth needed for a
+  // public repo, and this stays fast/simple for every viewer.
   async function ghGetFile(path) {
-    var res = await fetch(API_BASE + path + "?ref=" + BRANCH, { headers: authHeaders() });
+    var res = await fetch(API_BASE + path + "?ref=" + BRANCH, { headers: { "Accept": "application/vnd.github+json" } });
     if (res.status === 404) return { sha: null, text: null };
     if (!res.ok) throw new Error("HTTP " + res.status);
     var json = await res.json();
     return { sha: json.sha, text: b64DecodeUtf8(json.content) };
   }
 
-  async function ghPutFile(path, text, sha, message) {
-    if (!ghToken) throw new Error("ยังไม่ได้ตั้งค่า GitHub token");
-    var body = { message: message, content: b64EncodeUtf8(text), branch: BRANCH };
-    if (sha) body.sha = sha;
-    var doPut = function () {
-      return fetch(API_BASE + path, {
-        method: "PUT",
-        headers: Object.assign({ "Content-Type": "application/json" }, authHeaders()),
-        body: JSON.stringify(body)
-      });
-    };
-    var res = await doPut();
-    if (res.status === 409 || res.status === 422) {
-      var fresh = await ghGetFile(path);
-      body.sha = fresh.sha;
-      res = await doPut();
+  // Writes go through the Worker proxy — it holds the GitHub token, this
+  // page never does. sha handling/conflict retry happens inside the Worker.
+  async function proxyWriteFile(path, text, message) {
+    var res = await fetch(WORKER_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path: path, content: text, message: message })
+    });
+    var out = await res.json().catch(function () { return {}; });
+    if (!res.ok || !out.ok) {
+      throw new Error(out.error || ("HTTP " + res.status));
     }
-    if (!res.ok) {
-      var errJson = await res.json().catch(function () { return {}; });
-      throw new Error(errJson.message || ("HTTP " + res.status));
-    }
-    var out = await res.json();
-    return out.content.sha;
-  }
-
-  async function verifyToken() {
-    if (!ghToken) return null;
-    try {
-      var res = await fetch("https://api.github.com/user", { headers: authHeaders() });
-      if (!res.ok) return null;
-      var json = await res.json();
-      return json.login;
-    } catch (e) { return null; }
+    return out.sha;
   }
 
   // ---------------------------------------------------------------
-  // GitHub token settings panel
+  // Display name panel — optional, just labels who made a change in the
+  // GitHub commit history. No credentials involved.
   // ---------------------------------------------------------------
   var ghPanel = document.getElementById("gh-panel");
   var ghTokenInput = document.getElementById("gh-token-input");
@@ -450,47 +430,29 @@
     if (kind) syncStatusEl.classList.add(kind);
   }
 
-  async function refreshConnectionStatus() {
-    if (!ghToken) {
-      setSyncStatus("โหมดดูอย่างเดียว — ยังไม่ได้ตั้งค่า GitHub token (แก้ไขจะไม่ถูกบันทึก)");
-      setGhPanelStatus("ยังไม่ได้ตั้งค่า token");
-      return;
-    }
-    var login = await verifyToken();
-    if (login) {
-      ghUser = login;
-      setSyncStatus("เชื่อมต่อ GitHub ในนาม " + login + " — พร้อมบันทึกการแก้ไข", "ok");
-      setGhPanelStatus("เชื่อมต่อสำเร็จ ในนาม " + login, "ok");
-    } else {
-      setSyncStatus("Token ไม่ถูกต้องหรือหมดอายุ — โหมดดูอย่างเดียว", "error");
-      setGhPanelStatus("ตรวจสอบ token ไม่สำเร็จ — ลองสร้างใหม่", "error");
-    }
+  function refreshConnectionStatus() {
+    setSyncStatus(
+      ghUser ? "พร้อมบันทึกการแก้ไข ในนาม " + ghUser : "พร้อมบันทึกการแก้ไข (ไม่ระบุชื่อ — ตั้งชื่อได้ที่ 👤 ชื่อผู้ใช้)",
+      "ok"
+    );
+    setGhPanelStatus(ghUser ? "ชื่อปัจจุบัน: " + ghUser : "ยังไม่ได้ตั้งชื่อ");
   }
 
   document.getElementById("gh-settings-btn").addEventListener("click", function () {
     ghPanel.hidden = !ghPanel.hidden;
-    if (!ghPanel.hidden) ghTokenInput.value = ghToken;
+    if (!ghPanel.hidden) ghTokenInput.value = ghUser;
   });
 
-  document.getElementById("gh-token-save").addEventListener("click", async function () {
+  document.getElementById("gh-token-save").addEventListener("click", function () {
     var v = ghTokenInput.value.trim();
-    if (!v) { setGhPanelStatus("กรอก token ก่อนกดบันทึก", "error"); return; }
-    setGhPanelStatus("กำลังตรวจสอบ…");
-    ghToken = v;
-    var login = await verifyToken();
-    if (!login) {
-      setGhPanelStatus("Token นี้ใช้ไม่ได้ ตรวจสอบสิทธิ์ (ต้องมี public_repo)", "error");
-      ghToken = localStorage.getItem(TOKEN_KEY) || "";
-      return;
-    }
-    localStorage.setItem(TOKEN_KEY, v);
-    await refreshConnectionStatus();
+    ghUser = v;
+    if (v) localStorage.setItem(NAME_KEY, v); else localStorage.removeItem(NAME_KEY);
+    refreshConnectionStatus();
   });
 
   document.getElementById("gh-token-clear").addEventListener("click", function () {
-    ghToken = "";
     ghUser = "";
-    localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(NAME_KEY);
     ghTokenInput.value = "";
     refreshConnectionStatus();
   });
@@ -586,22 +548,18 @@
   }
 
   async function persistItems() {
-    if (!ghToken) {
-      setSyncStatus("ยังไม่ได้ตั้งค่า GitHub token — การเปลี่ยนแปลงนี้ยังไม่ถูกบันทึกให้คนอื่นเห็น (กด 🔑 บัญชี GitHub)", "error");
-      return;
-    }
     setSyncStatus("กำลังบันทึก…");
     try {
       var payload = rows.map(function (r) {
         return {
           id: r.id, kv: r.kv, mg: r.mg, md: r.md, mdText: r.mdText,
           lt: r.lt, mn: r.mn, batch: r.batch, requi: r.requi,
-          updatedBy: ghUser, updatedAt: new Date().toISOString()
+          updatedBy: ghUser || "ไม่ระบุชื่อ", updatedAt: new Date().toISOString()
         };
       });
       var text = JSON.stringify(payload, null, 2);
-      itemsSha = await ghPutFile("data/items.json", text, itemsSha, "Update items (" + (ghUser || "anonymous") + ")");
-      setSyncStatus("บันทึกแล้วโดย " + ghUser + " · " + new Date().toLocaleTimeString("th-TH"), "ok");
+      itemsSha = await proxyWriteFile("data/items.json", text, "Update items (" + (ghUser || "anonymous") + ")");
+      setSyncStatus("บันทึกแล้ว" + (ghUser ? "โดย " + ghUser : "") + " · " + new Date().toLocaleTimeString("th-TH"), "ok");
     } catch (err) {
       setSyncStatus("บันทึกไม่สำเร็จ: " + err.message, "error");
     }
@@ -611,9 +569,9 @@
     setDbStatus("กำลังอัปโหลดฐานข้อมูลใหม่ (" + newRawArray.length.toLocaleString("th-TH") + " แถว)…");
     try {
       var text = JSON.stringify(newRawArray);
-      dbSha = await ghPutFile("data/database.json", text, dbSha, "Update database (" + (ghUser || "anonymous") + ") — " + newRawArray.length + " rows");
+      dbSha = await proxyWriteFile("data/database.json", text, "Update database (" + (ghUser || "anonymous") + ") — " + newRawArray.length + " rows");
       setDbStatus(
-        "อัปเดตฐานข้อมูลสำเร็จ โดย " + ghUser + " — " + newRawArray.length.toLocaleString("th-TH") +
+        "อัปเดตฐานข้อมูลสำเร็จ" + (ghUser ? " โดย " + ghUser : "") + " — " + newRawArray.length.toLocaleString("th-TH") +
         " แถว · " + new Date().toLocaleString("th-TH") + " · ทุกคนที่รีเฟรชจะเห็นชุดใหม่นี้",
         "ok"
       );
@@ -961,10 +919,6 @@
   }
 
   document.getElementById("update-db-btn").addEventListener("click", function () {
-    if (!ghToken) {
-      setDbStatus("ต้องตั้งค่า GitHub token ก่อนอัปเดตฐานข้อมูล (กด 🔑 บัญชี GitHub ด้านบน)", "error");
-      return;
-    }
     dbFileInput.click();
   });
 
@@ -1025,7 +979,7 @@
 
       dataLoaded = true;
       render();
-      await refreshConnectionStatus();
+      refreshConnectionStatus();
     } catch (err) {
       setSyncStatus("โหลดข้อมูลไม่สำเร็จ: " + err.message, "error");
       setDbStatus("โหลดฐานข้อมูลไม่สำเร็จ: " + err.message, "error");
