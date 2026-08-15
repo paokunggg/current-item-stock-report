@@ -2,7 +2,7 @@
   {
     "id": 1,
     "kv": "230",
-    "mg": "",
+    "mg": "CCVT",
     "md": "",
     "mdText": "",
     "lt": "",
@@ -10,6 +10,6 @@
     "batch": "",
     "requi": "",
     "updatedBy": "pao",
-    "updatedAt": "2026-08-15T10:40:15.791Z"
+    "updatedAt": "2026-08-15T10:40:17.932Z"
   }
 ]
