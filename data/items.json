@@ -10,6 +10,19 @@
     "batch": "0000092868",
     "requi": "1",
     "updatedBy": "pao",
-    "updatedAt": "2026-08-15T10:31:02.421Z"
+    "updatedAt": "2026-08-15T10:31:47.747Z"
+  },
+  {
+    "id": 2,
+    "kv": "",
+    "mg": "",
+    "md": "",
+    "mdText": "",
+    "lt": "",
+    "mn": "",
+    "batch": "",
+    "requi": "",
+    "updatedBy": "pao",
+    "updatedAt": "2026-08-15T10:31:47.747Z"
   }
 ]
