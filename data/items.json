@@ -3,13 +3,13 @@
     "id": 1,
     "kv": "230",
     "mg": "Cable Termination",
-    "md": "",
+    "md": "230kV termination, 1/C 1600sq.mm.",
     "mdText": "",
     "lt": "",
     "mn": "",
     "batch": "",
     "requi": "",
     "updatedBy": "pao",
-    "updatedAt": "2026-08-15T10:30:56.325Z"
+    "updatedAt": "2026-08-15T10:30:57.465Z"
   }
 ]
