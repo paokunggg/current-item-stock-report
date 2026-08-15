@@ -1,15 +1,15 @@
 [
   {
     "id": 1,
-    "kv": "24",
-    "mg": "Circuit Breaker",
-    "md": "24kV 1600A 20kA GCB or Vaccum",
+    "kv": "",
+    "mg": "",
+    "md": "",
     "mdText": "",
-    "lt": "3130",
-    "mn": "6000000801",
-    "batch": "0000058101",
-    "requi": "1",
+    "lt": "",
+    "mn": "",
+    "batch": "",
+    "requi": "",
     "updatedBy": "ไม่ระบุชื่อ",
-    "updatedAt": "2026-08-15T10:30:01.672Z"
+    "updatedAt": "2026-08-15T10:30:09.438Z"
   }
 ]
