@@ -2,7 +2,7 @@
   {
     "id": 1,
     "kv": "24",
-    "mg": "",
+    "mg": "Circuit Breaker",
     "md": "",
     "mdText": "",
     "lt": "",
@@ -10,6 +10,6 @@
     "batch": "",
     "requi": "",
     "updatedBy": "ไม่ระบุชื่อ",
-    "updatedAt": "2026-08-15T10:29:49.448Z"
+    "updatedAt": "2026-08-15T10:29:53.655Z"
   }
 ]
