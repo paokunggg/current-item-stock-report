@@ -10,7 +10,7 @@
     "batch": "0000092868",
     "requi": "1",
     "updatedBy": "pao",
-    "updatedAt": "2026-08-15T10:31:52.299Z"
+    "updatedAt": "2026-08-15T10:31:54.059Z"
   },
   {
     "id": 2,
@@ -18,11 +18,11 @@
     "mg": "Bus Fitting",
     "md": "500kV support 5\"bc,4x1272 no corona ring",
     "mdText": "",
-    "lt": "",
-    "mn": "",
+    "lt": "970",
+    "mn": "3000042648",
     "batch": "",
     "requi": "",
     "updatedBy": "pao",
-    "updatedAt": "2026-08-15T10:31:52.299Z"
+    "updatedAt": "2026-08-15T10:31:54.059Z"
   }
 ]
