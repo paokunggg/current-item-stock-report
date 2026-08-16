@@ -10,7 +10,7 @@
     "batch": "INIT1762",
     "requi": "2",
     "updatedBy": "ไม่ระบุชื่อ",
-    "updatedAt": "2026-08-16T23:22:34.189Z"
+    "updatedAt": "2026-08-16T23:22:36.941Z"
   },
   {
     "id": 2,
@@ -18,11 +18,11 @@
     "mg": "Circuit Breaker",
     "md": "123kV 3150A 40kA GCB 3pole",
     "mdText": "",
-    "lt": "",
+    "lt": "5565",
     "mn": "",
     "batch": "",
     "requi": "",
     "updatedBy": "ไม่ระบุชื่อ",
-    "updatedAt": "2026-08-16T23:22:34.189Z"
+    "updatedAt": "2026-08-16T23:22:36.941Z"
   }
 ]
