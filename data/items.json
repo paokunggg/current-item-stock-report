@@ -2,14 +2,14 @@
   {
     "id": 1,
     "kv": "230",
-    "mg": "CCVT",
-    "md": "230 kV CCVT 138000:119.5/69 2wdg PD800A",
+    "mg": "Current Transformer",
+    "md": "",
     "mdText": "",
-    "lt": "5475",
-    "mn": "6000001483",
-    "batch": "0000026057",
+    "lt": "",
+    "mn": "",
+    "batch": "",
     "requi": "5",
-    "updatedBy": "pao",
-    "updatedAt": "2026-08-15T10:40:38.027Z"
+    "updatedBy": "ไม่ระบุชื่อ",
+    "updatedAt": "2026-08-16T23:19:06.738Z"
   }
 ]
