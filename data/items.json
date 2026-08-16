@@ -10,12 +10,12 @@
     "batch": "INIT1762",
     "requi": "2",
     "updatedBy": "ไม่ระบุชื่อ",
-    "updatedAt": "2026-08-16T23:22:26.258Z"
+    "updatedAt": "2026-08-16T23:22:28.718Z"
   },
   {
     "id": 2,
     "kv": "115",
-    "mg": "",
+    "mg": "Circuit Breaker",
     "md": "",
     "mdText": "",
     "lt": "",
@@ -23,6 +23,6 @@
     "batch": "",
     "requi": "",
     "updatedBy": "ไม่ระบุชื่อ",
-    "updatedAt": "2026-08-16T23:22:26.258Z"
+    "updatedAt": "2026-08-16T23:22:28.718Z"
   }
 ]
