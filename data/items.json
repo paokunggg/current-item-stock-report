@@ -10,12 +10,12 @@
     "batch": "0000092871",
     "requi": "400",
     "updatedBy": "ไม่ระบุชื่อ",
-    "updatedAt": "2026-10-21T02:35:08.728Z"
+    "updatedAt": "2026-10-21T02:35:10.881Z"
   },
   {
     "id": 7,
     "kv": "115",
-    "mg": "",
+    "mg": "XLPE Power Cable",
     "md": "",
     "mdText": "",
     "lt": "",
@@ -23,6 +23,6 @@
     "batch": "",
     "requi": "",
     "updatedBy": "ไม่ระบุชื่อ",
-    "updatedAt": "2026-10-21T02:35:08.728Z"
+    "updatedAt": "2026-10-21T02:35:10.881Z"
   }
 ]
