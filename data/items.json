@@ -2,7 +2,7 @@
   {
     "id": 1,
     "kv": "(blank)",
-    "mg": "",
+    "mg": "AAC",
     "md": "",
     "mdText": "",
     "lt": "",
@@ -10,6 +10,6 @@
     "batch": "",
     "requi": "",
     "updatedBy": "pao",
-    "updatedAt": "2026-10-21T16:08:07.831Z"
+    "updatedAt": "2026-10-21T16:08:15.687Z"
   }
 ]
