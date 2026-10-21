@@ -2,7 +2,7 @@
   {
     "id": 8,
     "kv": "500",
-    "mg": "",
+    "mg": "Bus Fitting",
     "md": "",
     "mdText": "",
     "lt": "",
@@ -10,7 +10,7 @@
     "batch": "",
     "requi": "",
     "updatedBy": "pao",
-    "updatedAt": "2026-10-21T15:52:55.590Z"
+    "updatedAt": "2026-10-21T15:53:01.626Z"
   },
   {
     "id": 9,
@@ -23,6 +23,6 @@
     "batch": "",
     "requi": "",
     "updatedBy": "pao",
-    "updatedAt": "2026-10-21T15:52:55.590Z"
+    "updatedAt": "2026-10-21T15:53:01.626Z"
   }
 ]
