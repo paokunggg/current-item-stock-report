@@ -460,6 +460,10 @@
   // ---------------------------------------------------------------
   // Cascading dropdown data model (unchanged logic from the offline version)
   // ---------------------------------------------------------------
+  // Items without a kV rating (bus fittings, grounding, conduit …) carry this
+  // label in the kV column so they can be picked like any other kV level.
+  var BLANK_KV = "(blank)";
+
   function uniqueWhere(idx, filters) {
     var seen = new Map();
     for (var i = 0; i < RAW.length; i++) {
@@ -475,6 +479,9 @@
     }
     var out = Array.from(seen.values());
     out.sort(function (a, b) {
+      // "(blank)" (items with no kV rating) is listed first, as in the Excel dropdown
+      if (a === BLANK_KV) return b === BLANK_KV ? 0 : -1;
+      if (b === BLANK_KV) return 1;
       var na = Number(a), nb = Number(b);
       if (!isNaN(na) && !isNaN(nb)) return na - nb;
       return String(a).localeCompare(String(b), "th");
@@ -806,7 +813,11 @@
     document.getElementById("stat-total").textContent = rows.length;
     document.getElementById("stat-good").textContent = good;
     document.getElementById("stat-warn").textContent = warn;
-    document.getElementById("stat-kv").textContent = kvSet.size ? Array.from(kvSet).sort(function (a, b) { return Number(a) - Number(b); }).join(", ") : "–";
+    document.getElementById("stat-kv").textContent = kvSet.size ? Array.from(kvSet).sort(function (a, b) {
+      if (a === BLANK_KV) return b === BLANK_KV ? 0 : -1;
+      if (b === BLANK_KV) return 1;
+      return Number(a) - Number(b);
+    }).join(", ") : "–";
 
     var notice = document.getElementById("notice-box");
     if (issues.length === 0) {
@@ -902,8 +913,8 @@
       if (!storage || storage.toLowerCase().indexOf("x") !== -1) continue;
 
       var matNo = cells[headerMap["Material No."]];
-      var kv = cells[headerMap["kV"]];
-      if (!matNo || !kv) continue;
+      var kv = cells[headerMap["kV"]] || BLANK_KV;
+      if (!matNo) continue;
 
       var matGroup = cells[headerMap["Material Group"]];
       var matDes = cells[headerMap["Material Description"]];
